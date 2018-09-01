@@ -32,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView textViewCreator = (TextView) findViewById(R.id.text_view_creator_detail);
         TextView textViewLikes = (TextView) findViewById(R.id.text_view_like_detail);
 
-        Picasso.with(this).load(imageUrl).fit().centerInside().into(imageView);
+        Picasso.with(this).load(imageUrl).fit().centerCrop().into(imageView);
         textViewCreator.setText(creatorName);
        // textViewLikes.setText("Likes: " + likeCount);
     }

@@ -92,9 +92,17 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(mContext, "testClick"+ getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    Intent detailIntent = new Intent(mContext, DetailActivity.class);
-                    mContext.startActivity(detailIntent);
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION ) {
+
+                        ExampleItem clickedItem = mExampleList.get(position);
+
+                        Toast.makeText(mContext, "testClick" + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                        Intent detailIntent = new Intent(mContext, DetailActivity.class);
+                        detailIntent.putExtra(EXTRA_URL, clickedItem.getImageUrl());
+                        detailIntent.putExtra(EXTRA_CREATOR, clickedItem.getCreator());
+                        mContext.startActivity(detailIntent);
+                    }
                     
                     
                     
