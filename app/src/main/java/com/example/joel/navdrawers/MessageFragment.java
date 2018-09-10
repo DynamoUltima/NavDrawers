@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +36,10 @@ public class MessageFragment extends Fragment  {
     public  static  String imageUrl;
     private ExampleAdapter mExampleAdapter;
 
+    private RecyclerView mRecyclerViewHorizontal;
+    private ExampleAdapterHorizontal mExampleAdapterHorizontal;
+
+
 
 
     @Nullable
@@ -43,7 +49,13 @@ public class MessageFragment extends Fragment  {
 
         mRecyclerView =   view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2, LinearLayoutManager.VERTICAL,false));
+
+
+
+        mRecyclerViewHorizontal = (RecyclerView)view.findViewById(R.id.recycle_view);
+        mRecyclerViewHorizontal.setHasFixedSize(true);
+        mRecyclerViewHorizontal.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
 
         mExampleList = new ArrayList<>();
 
@@ -60,6 +72,8 @@ public class MessageFragment extends Fragment  {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
+
                         try {
                             JSONArray jsonArray = response.getJSONArray("categories");
 
@@ -77,6 +91,11 @@ public class MessageFragment extends Fragment  {
                             mExampleAdapter = new ExampleAdapter(getActivity(), mExampleList);//the was a third parameter
                             mRecyclerView.setAdapter(mExampleAdapter);
                            // mExampleAdapter.setOnItemClickListener(this);
+                           // Toast.makeText(getActivity(), response.getJSONArray(), Toast.LENGTH_SHORT).show();
+
+
+                            mExampleAdapterHorizontal = new ExampleAdapterHorizontal(getActivity(), mExampleList);
+                            mRecyclerViewHorizontal.setAdapter(mExampleAdapterHorizontal);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
