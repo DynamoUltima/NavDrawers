@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     public MessageAdapter(Context mContext, ArrayList<MessageInfo> mInfo) {
         this.mContext = mContext;
-        this.mInfo =mInfo;
+        this.mInfo = mInfo;
     }
 
 
@@ -37,39 +38,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-//
-//        ExampleItem currentItem = mExampleList.get(position);
-//
-//        String imageUrl = currentItem.getImageUrl();
-//        String creatorName = currentItem.getCreator();
-//        //   int likeCount = currentItem.getLikeCount();
-//
-//        holder.mTextViewCreator.setText(creatorName);
-//        // holder.mTextViewLikes.setText("Likes: " + likeCount);
-//        Picasso.with(mContext).load(imageUrl).fit().centerInside().into(holder.mImageView);
-
-        //center crop instead of centre inside
-
         MessageInfo currentItem = mInfo.get(position);
 
         String messageTitle = currentItem.getmTitle();
         String messageAuthor = currentItem.getmAuthor();
         String messageImage = currentItem.getmMessageImage();
 
+
+        holder.mMessageTitle.setText(messageTitle);
+        holder.mMessageAuthor.setText(messageAuthor);
+        Picasso.with(mContext).load(messageImage).fit().centerCrop().into(holder.mMessageImageView);
+        /**
+         * there is no image in the API ,take note of the picasso loader
+         * And the Message Info Java class*/
+
     }
 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mInfo.size();
     }
+
     public class MessageViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mMessageImageView;
         public TextView mMessageTitle;
         public TextView mMessageAuthor;
-
-
 
 
         public MessageViewHolder(View itemView) {
