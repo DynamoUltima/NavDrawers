@@ -44,10 +44,10 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<MessageInfo> messageInfos;
     private RequestQueue mRequestQueue;
 
-    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM2ODY2NDcxLCJleHAiOjE1MzY4NzY0NzF9.PFZzKVCqtMm4UcXU6i_PDcLb_nsAbfZdkoZf3Hj9hKU";
+    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM3NTMyNTY5LCJleHAiOjE1Mzc1NDI1Njl9.gIgmS9AiqUGrKG2Fi0NQ21nlkyvmhNvAPHYknIAOwk4";
 
 
-    private static final String IMAGE_ADDRESS ="https://pastoroti.org/wp-content/uploads/2017/03/5min_newpsd-Copy-e1490524437255-540x310.jpg";
+  //  private static final String IMAGE_ADDRESS ="https://cdn.pixabay.com/photo/2018/09/16/19/32/morgentau-3682209_960_720.jpg";
 
     SharedPreferences sp;
 
@@ -110,11 +110,11 @@ public class DetailActivity extends AppCompatActivity {
                                 String cardAuthor = categories.getString("source");
                                 String cardGenre =  categories.getString("genre");
                                 String cardSource = categories.getString("source");
-                                String cardImage = categories.getString(IMAGE_ADDRESS);
+                               // String cardImage = categories.getString(IMAGE_ADDRESS);
                                // imageUrl = categories.getString("wallpaper");
                                 //actually int String likeCount = categories.getString("createdAt");
 
-                                messageInfos.add(new MessageInfo(cardTitle,cardGenre,cardSource,cardAuthor,cardImage));
+                                messageInfos.add(new MessageInfo(cardTitle,cardGenre,cardSource,cardAuthor));
                             }
 
 
@@ -132,7 +132,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(DetailActivity.this, "Error"+ error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(DetailActivity.this, "Error"+ error.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override

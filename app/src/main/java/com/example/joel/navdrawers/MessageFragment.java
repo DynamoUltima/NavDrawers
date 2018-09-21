@@ -47,7 +47,7 @@ public class MessageFragment extends Fragment  {
     private RecyclerView mRecyclerViewHorizontal;
     private ExampleAdapterHorizontal mExampleAdapterHorizontal;
 
-    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM2ODY2NDcxLCJleHAiOjE1MzY4NzY0NzF9.PFZzKVCqtMm4UcXU6i_PDcLb_nsAbfZdkoZf3Hj9hKU";
+    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM3NTMyNTY5LCJleHAiOjE1Mzc1NDI1Njl9.gIgmS9AiqUGrKG2Fi0NQ21nlkyvmhNvAPHYknIAOwk4";
 
 
 

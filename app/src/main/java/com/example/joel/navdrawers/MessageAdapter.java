@@ -42,12 +42,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         String messageTitle = currentItem.getmTitle();
         String messageAuthor = currentItem.getmAuthor();
-        String messageImage = currentItem.getmMessageImage();
+      //  String messageImage = currentItem.getmMessageImage();
 
 
         holder.mMessageTitle.setText(messageTitle);
         holder.mMessageAuthor.setText(messageAuthor);
-        Picasso.with(mContext).load(messageImage).fit().centerCrop().into(holder.mMessageImageView);
+        Picasso.with(mContext).load("https://pastoroti.org/wp-content/uploads/2017/03/5min_newpsd-Copy-e1490524437255-540x310.jpg").fit().centerCrop().into(holder.mMessageImageView);
         /**
          * there is no image in the API ,take note of the picasso loader
          * And the Message Info Java class*/
