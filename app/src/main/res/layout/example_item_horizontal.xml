@@ -20,12 +20,6 @@
             android:layout_height="200dp"
             android:src="@mipmap/ic_launcher" />
 
-        <Button
-            android:id="@+id/download_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="download" />
-
         <TextView
             android:id="@+id/text_view_creator"
             android:layout_width="wrap_content"

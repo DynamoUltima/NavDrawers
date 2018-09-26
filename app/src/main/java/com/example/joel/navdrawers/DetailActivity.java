@@ -4,6 +4,7 @@ package com.example.joel.navdrawers;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,9 +35,9 @@ import static com.example.joel.navdrawers.ExampleAdapter.EXTRA_URL;
 import static com.example.joel.navdrawers.MessageFragment.imageUrl;
 
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements MessageAdapter.OnItemClickListener {
     //int pid;
-   // private MessageInfo messageInfo;
+    // private MessageInfo messageInfo;
 
 
     private RecyclerView mRecyclerView;
@@ -44,10 +45,10 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<MessageInfo> messageInfos;
     private RequestQueue mRequestQueue;
 
-    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM3NTMyNTY5LCJleHAiOjE1Mzc1NDI1Njl9.gIgmS9AiqUGrKG2Fi0NQ21nlkyvmhNvAPHYknIAOwk4";
+    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM3ODk2NTEyLCJleHAiOjE1Mzc5MDY1MTJ9.nzON94aGm0omvwGxQLwvay8EXkzcb5NQ_hF899pTWMA";
 
 
-  //  private static final String IMAGE_ADDRESS ="https://cdn.pixabay.com/photo/2018/09/16/19/32/morgentau-3682209_960_720.jpg";
+    //  private static final String IMAGE_ADDRESS ="https://cdn.pixabay.com/photo/2018/09/16/19/32/morgentau-3682209_960_720.jpg";
 
     SharedPreferences sp;
 
@@ -83,17 +84,18 @@ public class DetailActivity extends AppCompatActivity {
     /**
      * the plan is to get a particular id from each of the json objects(pid) in the first request in the message fragments
      * then pass that id into the string url (that is actually making a query)
-     * so that we can displaying the messages under each category*/
+     * so that we can displaying the messages under each category
+     */
 
 
-   private void parseJSON() {
+    private void parseJSON() {
 
 //       SharedPreferences sharedPreferences = getSharedPreferences("com.example.joel.navdrawers", MODE_PRIVATE);
 //       String pid = sharedPreferences.getString("personelID", "");
 
-       // String url = String.format("http://loveapp-le.herokuapp.com/v1/categories/", pid);
+        // String url = String.format("http://loveapp-le.herokuapp.com/v1/categories/", pid);
 
-         String url ="http://loveapp-le.herokuapp.com/v1/contents";
+        String url = "http://loveapp-le.herokuapp.com/v1/contents";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -107,34 +109,34 @@ public class DetailActivity extends AppCompatActivity {
                                 JSONObject categories = jsonArray.getJSONObject(i);
 
                                 String cardTitle = categories.getString("title");
-                                String cardAuthor = categories.getString("source");
-                                String cardGenre =  categories.getString("genre");
+                                String cardAuthor = categories.getString("author");
+                                String cardGenre = categories.getString("genre");
                                 String cardSource = categories.getString("source");
-                               // String cardImage = categories.getString(IMAGE_ADDRESS);
-                               // imageUrl = categories.getString("wallpaper");
-                                //actually int String likeCount = categories.getString("createdAt");
+                                // String cardImage = categories.getString(IMAGE_ADDRESS);
+                                // imageUrl = categories.getString("wallpaper");
 
-                                messageInfos.add(new MessageInfo(cardTitle,cardGenre,cardSource,cardAuthor));
+
+                                messageInfos.add(new MessageInfo(cardTitle, cardGenre, cardSource, cardAuthor));
                             }
 
 
                             messageAdapter = new MessageAdapter(DetailActivity.this, messageInfos);
                             mRecyclerView.setAdapter(messageAdapter);
-                            // mExampleAdapter.setOnItemClickListener(this);
+                            messageAdapter.setOnItemClickListener(DetailActivity.this);
                             // Toast.makeText(getActivity(), response.getJSONArray(), Toast.LENGTH_SHORT).show();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(DetailActivity.this, "JSON Exception"+ e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DetailActivity.this, "JSON Exception" + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-               // Toast.makeText(DetailActivity.this, "Error"+ error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(DetailActivity.this, "Error"+ error.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
@@ -145,6 +147,21 @@ public class DetailActivity extends AppCompatActivity {
 
 
         mRequestQueue.add(request);
+
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent detailIntent = new Intent(this,MessagePlayerActivity.class);
+        MessageInfo clickedMessage = messageInfos.get(position);
+
+        detailIntent.putExtra("title",clickedMessage.getmTitle());
+        detailIntent.putExtra("author",clickedMessage.getmAuthor());
+
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(DetailActivity.this,findViewById(R.id.message_view),"myImage");
+
+        startActivity(detailIntent,optionsCompat.toBundle());
 
 
     }

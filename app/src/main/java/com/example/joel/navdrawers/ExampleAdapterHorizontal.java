@@ -67,27 +67,17 @@ public class ExampleAdapterHorizontal extends RecyclerView.Adapter<ExampleAdapte
     public class ExampleViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
         public TextView mTextViewCreator;
-        public Button download_btn;
+
 
 
         public ExampleViewHolder(final View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.image_view);
             mTextViewCreator = itemView.findViewById(R.id.text_view_creator);
-            download_btn = itemView.findViewById(R.id.download_btn);
-
-
-
-            download_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
 
 
 
-
-                }
-            });
 
             //  mTextViewLikes = itemView.findViewById(R.id.text_view_likes);
 

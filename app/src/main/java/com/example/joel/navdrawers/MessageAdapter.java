@@ -1,6 +1,7 @@
 package com.example.joel.navdrawers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,13 +21,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     private Context mContext;
     private ArrayList<MessageInfo> mInfo;
-    private AdapterView.OnItemClickListener mListener;
+    private OnItemClickListener mListener;
     private RequestQueue mRequestQueue;
 
     public MessageAdapter(Context mContext, ArrayList<MessageInfo> mInfo) {
         this.mContext = mContext;
         this.mInfo = mInfo;
     }
+    public interface OnItemClickListener{
+    void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener= listener;
+    }
+
 
 
     @NonNull
@@ -70,8 +78,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public MessageViewHolder(View itemView) {
             super(itemView);
             mMessageImageView = itemView.findViewById(R.id.message_view);
-            mMessageTitle = itemView.findViewById(R.id.message_author);
+            mMessageTitle = itemView.findViewById(R.id.message_title);
             mMessageAuthor = itemView.findViewById(R.id.message_author);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position);
+
+                        }
+                    }
+
+                }
+            });
+
         }
     }
 }
