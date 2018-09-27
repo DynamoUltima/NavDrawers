@@ -47,7 +47,8 @@ public class MessageFragment extends Fragment  {
     private RecyclerView mRecyclerViewHorizontal;
     private ExampleAdapterHorizontal mExampleAdapterHorizontal;
 
-    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM3ODk2NTEyLCJleHAiOjE1Mzc5MDY1MTJ9.nzON94aGm0omvwGxQLwvay8EXkzcb5NQ_hF899pTWMA";
+
+
 
 
 
@@ -72,12 +73,18 @@ public class MessageFragment extends Fragment  {
         sp = this.getActivity().getSharedPreferences("com.example.joel.navdrawers", Context.MODE_PRIVATE);
 
 
+
+
         mRequestQueue = Volley.newRequestQueue(getActivity());
         parseJSON();
         return view;
     }
 
     private void parseJSON() {
+
+        sp = this.getActivity().getSharedPreferences("com.loveeconomy.loveeconomy", Context.MODE_PRIVATE);
+        final String token = sp.getString("auth_token", "");
+
         String url = "http://loveapp-le.herokuapp.com/v1/categories";
            // String url ="https://salty-garden-58363.herokuapp.com/v1/users/new";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -129,7 +136,7 @@ public class MessageFragment extends Fragment  {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", API_TOKEN);
+                headers.put("Authorization", token);
                 return headers;
             }
         };

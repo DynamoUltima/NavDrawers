@@ -1,6 +1,7 @@
 package com.example.joel.navdrawers;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,13 +45,15 @@ public class DetailActivity extends AppCompatActivity implements MessageAdapter.
     private MessageAdapter messageAdapter;
     private ArrayList<MessageInfo> messageInfos;
     private RequestQueue mRequestQueue;
+    SharedPreferences sp;
 
-    public String API_TOKEN="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZGM4NGI2YWItNGRjZC00NDY5LTkxNDAtYjcyMjkxYzQ1MzZmIiwiaWF0IjoxNTM3ODk2NTEyLCJleHAiOjE1Mzc5MDY1MTJ9.nzON94aGm0omvwGxQLwvay8EXkzcb5NQ_hF899pTWMA";
+
+
 
 
     //  private static final String IMAGE_ADDRESS ="https://cdn.pixabay.com/photo/2018/09/16/19/32/morgentau-3682209_960_720.jpg";
 
-    SharedPreferences sp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +93,10 @@ public class DetailActivity extends AppCompatActivity implements MessageAdapter.
 
     private void parseJSON() {
 
-//       SharedPreferences sharedPreferences = getSharedPreferences("com.example.joel.navdrawers", MODE_PRIVATE);
-//       String pid = sharedPreferences.getString("personelID", "");
+        sp = getSharedPreferences("com.loveeconomy.loveeconomy", Context.MODE_PRIVATE);
+        final String token = sp.getString("auth_token", "");
+
+
 
         // String url = String.format("http://loveapp-le.herokuapp.com/v1/categories/", pid);
 
@@ -140,7 +145,7 @@ public class DetailActivity extends AppCompatActivity implements MessageAdapter.
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", API_TOKEN);
+                headers.put("Authorization", token);
                 return headers;
             }
         };

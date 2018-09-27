@@ -48,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void RedirectToDashboard(){
-        Intent dashboard = new Intent(getApplicationContext(), MessageFragment.class);
+        Intent dashboard = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(dashboard);
     }
 

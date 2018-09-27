@@ -92,6 +92,7 @@ public class SignInActivity extends AppCompatActivity {
                                 JSONObject userObject = response.getJSONObject("user");
                                 String userId = userObject.getString("id");
 
+
                                 saveSession(token, userId);
                                 RedirectToDashboard();
 
