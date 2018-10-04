@@ -34,6 +34,9 @@ public class SignInActivity extends AppCompatActivity {
     private RequestQueue serverRequest;
     private AlertDialog progressDialog;
     private TextView SignUp;
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+
 
     @SuppressLint("CommitPrefEdits")
     public void saveSession(String token, String userId){
@@ -51,6 +54,18 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        SharedPreferences prefs = getSharedPreferences("com.loveeconomy",MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("logged",false);
+
+
+        //boolean firstStart = prefs.getBoolean("logged",false);
+
+        if (prefs.getBoolean("logged",true)){
+            RedirectToDashboard();
+        }else if (prefs.getBoolean("logged",false)){
+            startActivity(new Intent(this,SignInActivity.class));
+        }
 
         emailField = findViewById(R.id.email);
         passwordField = findViewById(R.id.password);
@@ -91,9 +106,16 @@ public class SignInActivity extends AppCompatActivity {
                                 String token = response.getString("token");
                                 JSONObject userObject = response.getJSONObject("user");
                                 String userId = userObject.getString("id");
+                                SharedPreferences prefs = getSharedPreferences("com.loveeconomy",MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+
+                                editor.putBoolean("logged",true);
+                                editor.apply();
 
 
                                 saveSession(token, userId);
+
+
                                 RedirectToDashboard();
 
                             } catch (JSONException e) {
