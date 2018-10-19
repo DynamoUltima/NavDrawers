@@ -56,7 +56,7 @@ public class ExampleAdapterHorizontal extends RecyclerView.Adapter<ExampleAdapte
 
 
         holder.mTextViewCreator.setText(creatorName);
-        Picasso.with(mContext).load(imageUrl).fit().centerInside().into(holder.mImageView);
+        Picasso.with(mContext).load(imageUrl).fit().centerCrop().into(holder.mImageView);
     }
 
     @Override
