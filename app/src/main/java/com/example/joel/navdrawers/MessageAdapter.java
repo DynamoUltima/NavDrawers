@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,18 +18,58 @@ import com.android.volley.RequestQueue;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> implements Filterable {
 
     private Context mContext;
     private ArrayList<MessageInfo> mInfo;
+    private ArrayList<MessageInfo> exampleListFull;
     private OnItemClickListener mListener;
     private RequestQueue mRequestQueue;
 
     public MessageAdapter(Context mContext, ArrayList<MessageInfo> mInfo) {
         this.mContext = mContext;
         this.mInfo = mInfo;
+        exampleListFull = new ArrayList<>(mInfo);
     }
+
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<MessageInfo> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(exampleListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (MessageInfo item : exampleListFull) {
+                    if (item.getmTitle().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mInfo.clear();
+            mInfo.addAll((ArrayList) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
     public interface OnItemClickListener{
     void onItemClick(int position);
     }

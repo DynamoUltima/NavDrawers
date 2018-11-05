@@ -6,28 +6,28 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_message"
-            android:icon="@drawable/ic_message"
-            android:title="Message" />
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
         <item
             android:id="@+id/nav_chat"
-            android:icon="@drawable/ic_chat"
-            android:title="Chat" />
+            android:icon="@drawable/ic_import_contacts"
+            android:title="Messages" />
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Profile" />
+            android:icon="@drawable/ic_file_download"
+            android:title="Downloads" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_share"
-                android:title="Share" />
+                android:icon="@drawable/ic_settings"
+                android:title="Settings" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_send"
-                android:title="Send" />
+                android:icon="@drawable/ic_swap_horiz"
+                android:title="Switch Accounts" />
         </menu>
     </item>
 

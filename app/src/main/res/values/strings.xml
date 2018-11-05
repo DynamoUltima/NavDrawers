@@ -11,4 +11,11 @@
     <string name="enter_email">email</string>
     <string name="enter_pass">password</string>
     <string name="login_btn">Login</string>
+
+    <string name="play_item">Play item</string>
+    <string name="play_pause">play or pause</string>
+    <string name="skip_next">skip to next</string>
+    <string name="skip_prev">skip to previous</string>
+
+
 </resources>
