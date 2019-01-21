@@ -32,5 +32,4 @@ dependencies {
     implementation 'com.github.d-max:spots-dialog:0.4@aar'
 
 
-
 }

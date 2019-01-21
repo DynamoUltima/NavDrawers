@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.io.IOException;
 
@@ -27,7 +28,7 @@ public class MessagePlayerActivity extends AppCompatActivity {
     /**
      * using static for now because this is going to be the only playpausebutton in our app
      **/
-    static FloatingActionButton playPauseButton;
+    static ImageView playPauseButton;
     private String MUSIC_URL = "https://pastoroti.org/audiodevotional/wp-content/uploads/sites/4/2018/09/21st-September-2018-My-Prayer-For-You-5-Mins-with-Pastor-Oti-Love-Economy.mp3";
     PlayerService mBoundService;
     boolean mServiceBound = false;
@@ -60,7 +61,7 @@ public class MessagePlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
 
-        playPauseButton = findViewById(R.id.audioStreamBtn);
+       playPauseButton = findViewById(R.id.audioStreamBtn);
         playPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

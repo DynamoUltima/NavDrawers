@@ -96,6 +96,14 @@
             android:paddingTop="12dp"
             android:background="@drawable/inp_field_inverse" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signInText"
+            android:text="Sign In"
+            android:layout_gravity="center"
+           android:textSize="18dp"/>
+
         <Button
             android:id="@+id/signUpbtn"
             android:layout_width="match_parent"

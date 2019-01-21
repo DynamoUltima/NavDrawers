@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,6 +38,8 @@ public class SignInActivity extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
+    UserSessionManager session;
+
 
     @SuppressLint("CommitPrefEdits")
     public void saveSession(String token, String userId){
@@ -45,31 +48,42 @@ public class SignInActivity extends AppCompatActivity {
         activeSession.edit().putString("user_id", userId).apply();
     }
 
-    public void RedirectToDashboard(){
-        Intent dashboard = new Intent(getApplicationContext(),MainActivity.class);
-        startActivity(dashboard);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+
         SharedPreferences prefs = getSharedPreferences("com.loveeconomy",MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("logged",false);
+        //SharedPreferences.Editor editor = prefs.edit();
+
+        session = new UserSessionManager(getApplicationContext());
 
 
-        //boolean firstStart = prefs.getBoolean("logged",false);
 
-        if (prefs.getBoolean("logged",true)){
-            RedirectToDashboard();
-        }else if (prefs.getBoolean("logged",false)){
-            startActivity(new Intent(this,SignInActivity.class));
-        }
+       // editor.putBoolean("logged",false);
 
         emailField = findViewById(R.id.email);
         passwordField = findViewById(R.id.password);
         submitButton = findViewById(R.id.signInbtn);
+
+
+//        boolean firstStart = prefs.getBoolean("logged",false);
+//        final String mail = emailField.getText().toString().trim();
+//        final String pass = passwordField.getText().toString();
+
+//        if (!firstStart){
+//
+//            Toast.makeText(this, "sign in", Toast.LENGTH_SHORT).show();
+//            //startActivity(new Intent(this,SignUpActivity.class));
+//        }else  {
+//
+//            RedirectToDashboard();
+//        }
+
+
         serverRequest = Volley.newRequestQueue(this);
 
         SignUp = findViewById(R.id.NewAccounts);
@@ -90,56 +104,76 @@ public class SignInActivity extends AppCompatActivity {
                 final String mail = emailField.getText().toString().trim();
                 final String pass = passwordField.getText().toString();
 
+                if(mail.trim().length() > 0 && pass.trim().length() > 0) {
+                    progressDialog = new SpotsDialog(SignInActivity.this, R.style.Custom);
+                    progressDialog.show();
+                    try {
+                        String url = "http://loveapp-le.herokuapp.com/v1/users/login";
+                        JSONObject jsonBody = new JSONObject();
+                        jsonBody.put("email", mail);
+                        jsonBody.put("password", pass);
 
-                progressDialog = new SpotsDialog(SignInActivity.this, R.style.Custom);
-                progressDialog.show();
-                try {
-                    String url = "http://loveapp-le.herokuapp.com/v1/users/login";
-                    JSONObject jsonBody =  new JSONObject();
-                    jsonBody.put("email", mail);
-                    jsonBody.put("password", pass);
+                        JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
 
-                    JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                String token = response.getString("token");
-                                JSONObject userObject = response.getJSONObject("user");
-                                String userId = userObject.getString("id");
-                                SharedPreferences prefs = getSharedPreferences("com.loveeconomy",MODE_PRIVATE);
-                                SharedPreferences.Editor editor = prefs.edit();
+                                    if (!response.getString("token").isEmpty()) {
+                                        String token = response.getString("token");
+                                        JSONObject userObject = response.getJSONObject("user");
+                                        String userId = userObject.getString("id");
+                                        progressDialog.dismiss();
 
-                                editor.putBoolean("logged",true);
-                                editor.apply();
+                                        session.createUserLoginSession(mail, userId);
+                                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+                                        // Add new Flag to start new Activity
+                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(i);
 
-                                saveSession(token, userId);
+                                        finish();
 
 
-                                RedirectToDashboard();
+                                        saveSession(token, userId);
+                                    }else{
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                        // username / password doesn't match
+                                        Toast.makeText(getApplicationContext(), "Error response no token", Toast.LENGTH_LONG).show();
+
+                                    }
+
+
+                                    // RedirectToDashboard();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                progressDialog.dismiss();
                             }
-                            progressDialog.dismiss();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("login_error",error.toString());
-                        }
-                    }) {
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("login_error", error.toString());
+                            }
+                        }) {
 //                        @Override
 //                        public Map<String, String> getHeaders() throws AuthFailureError {
 //                            final Map<String, String> headers = new HashMap<>();
 //                            headers.put("Authorization", "Bearer " + "c2FnYXJAa2FydHBheS5jb206cnMwM2UxQUp5RnQzNkQ5NDBxbjNmUDgzNVE3STAyNzI=");//put your token here
 //                            return headers;
 //                        }
-                    };
-                    serverRequest.add(jsonOblect);
+                        };
+                        serverRequest.add(jsonOblect);
 
-                }catch(JSONException e){
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+
+                    // user didn't entered username or password
+                    Toast.makeText(getApplicationContext(), "Please enter username and password", Toast.LENGTH_LONG).show();
+
                 }
             }
         });

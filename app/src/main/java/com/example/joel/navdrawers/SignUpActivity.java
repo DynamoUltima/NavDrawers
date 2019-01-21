@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,6 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText firstname;
     private EditText lastName;
     private Button signUpBtn;
+    private TextView signInText;
 
     private RequestQueue serverRequest;
 
@@ -57,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        signInText = findViewById(R.id.signInText);
         emailField =findViewById(R.id.email);
         passwordField= findViewById(R.id.pwd);
         firstname = findViewById(R.id.first_name);
@@ -64,6 +67,13 @@ public class SignUpActivity extends AppCompatActivity {
         signUpBtn = findViewById(R.id.signUpbtn);
 
         serverRequest = Volley.newRequestQueue(this);
+        signInText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignUpActivity.this,SignInActivity.class);
+                startActivity(intent);
+            }
+        });
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
