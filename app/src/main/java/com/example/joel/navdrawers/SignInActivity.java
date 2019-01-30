@@ -3,6 +3,7 @@ package com.example.joel.navdrawers;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -57,31 +58,17 @@ public class SignInActivity extends AppCompatActivity {
 
 
         SharedPreferences prefs = getSharedPreferences("com.loveeconomy",MODE_PRIVATE);
-        //SharedPreferences.Editor editor = prefs.edit();
+
 
         session = new UserSessionManager(getApplicationContext());
 
-
-
-       // editor.putBoolean("logged",false);
 
         emailField = findViewById(R.id.email);
         passwordField = findViewById(R.id.password);
         submitButton = findViewById(R.id.signInbtn);
 
 
-//        boolean firstStart = prefs.getBoolean("logged",false);
-//        final String mail = emailField.getText().toString().trim();
-//        final String pass = passwordField.getText().toString();
 
-//        if (!firstStart){
-//
-//            Toast.makeText(this, "sign in", Toast.LENGTH_SHORT).show();
-//            //startActivity(new Intent(this,SignUpActivity.class));
-//        }else  {
-//
-//            RedirectToDashboard();
-//        }
 
 
         serverRequest = Volley.newRequestQueue(this);
@@ -92,6 +79,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent signIntent = new Intent(SignInActivity.this,SignUpActivity.class);
                 startActivity(signIntent);
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
 
@@ -99,13 +87,16 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                submitButton.setEnabled(false);
+                //submitButton.setEnabled(false);
 
                 final String mail = emailField.getText().toString().trim();
                 final String pass = passwordField.getText().toString();
 
                 if(mail.trim().length() > 0 && pass.trim().length() > 0) {
-                    progressDialog = new SpotsDialog(SignInActivity.this, R.style.Custom);
+                    final ProgressDialog progressDialog = new ProgressDialog(SignInActivity.this,
+                            R.style.AppTheme_Dark_Dialog);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Authenticating...");
                     progressDialog.show();
                     try {
                         String url = "http://loveapp-le.herokuapp.com/v1/users/login";
@@ -172,7 +163,7 @@ public class SignInActivity extends AppCompatActivity {
                 }else{
 
                     // user didn't entered username or password
-                    Toast.makeText(getApplicationContext(), "Please enter username and password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Please enter Email and Password", Toast.LENGTH_LONG).show();
 
                 }
             }

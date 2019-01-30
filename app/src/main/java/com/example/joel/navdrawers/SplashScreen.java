@@ -34,7 +34,7 @@ public class SplashScreen extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
 
         if (session.checkLogin()) {
-            Toast.makeText(this, "welcome", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(this, "welcome", Toast.LENGTH_SHORT).show();
         }
 
         // get user data from session
