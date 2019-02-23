@@ -4,16 +4,20 @@ package com.example.joel.navdrawers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,8 +36,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
+
 
 public class MessageFragment extends Fragment  {
+
+    ExampleBroadcastReceiver exampleBroadcastReceiver = new ExampleBroadcastReceiver();
 
     private RecyclerView mRecyclerView;
     private ArrayList<ExampleItem> mExampleList;
@@ -46,6 +54,9 @@ public class MessageFragment extends Fragment  {
 
     private RecyclerView mRecyclerViewHorizontal;
     private ExampleAdapterHorizontal mExampleAdapterHorizontal;
+    private TextView categoryMessage;
+    private TextView recentMessage;
+    private SwipeRefreshLayout swipeContainer;
 
 
 
@@ -60,11 +71,23 @@ public class MessageFragment extends Fragment  {
 
         mRecyclerView =   view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
+        categoryMessage = view.findViewById(R.id.categoryMessage);
+        recentMessage =view.findViewById(R.id.RecentMessage);
         //mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2, LinearLayoutManager.VERTICAL,false));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
 
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
+        swipeContainer.setColorSchemeResources(android.R.color.holo_orange_dark);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                parseJSON();
+                Toasty.success(getActivity(), "Refreshed", Toast.LENGTH_SHORT).show();
+            }
+
+        });
         mRecyclerViewHorizontal = (RecyclerView)view.findViewById(R.id.recycle_view);
         mRecyclerViewHorizontal.setHasFixedSize(true);
         mRecyclerViewHorizontal.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
@@ -81,6 +104,19 @@ public class MessageFragment extends Fragment  {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getActivity().registerReceiver(exampleBroadcastReceiver,filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(exampleBroadcastReceiver);
+    }
+
     private void parseJSON() {
 
         sp = this.getActivity().getSharedPreferences("com.loveeconomy.loveeconomy", Context.MODE_PRIVATE);
@@ -92,6 +128,7 @@ public class MessageFragment extends Fragment  {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        swipeContainer.setRefreshing(false);
 
 
                         try {

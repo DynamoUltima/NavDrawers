@@ -16,6 +16,10 @@
     <string name="play_pause">play or pause</string>
     <string name="skip_next">skip to next</string>
     <string name="skip_prev">skip to previous</string>
+    <string name="card_title">Category</string>
+    <string name="card_content">stay blessed with messages from Pastor Oti Boateng</string>
+    <string name="action_share">share</string>
+    <string name="action_explore">EXPLORE</string>
 
 
 </resources>

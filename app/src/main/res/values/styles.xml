@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -7,6 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <!--<style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">-->
+    <!--<item name="android:background" tools:ignore="NewApi">@android:color/transparent</item>-->
+    <!--<item name="background">@android:color/transparent</item>-->
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -22,6 +26,13 @@
         <item name="DialogSpotColor">@color/colorPrimary</item>
         <item name="DialogSpotCount">5</item>
         <item name="android:background">@color/primary_darker</item>
+    </style>
+
+    <style name="PrimaryFlatButton" parent="Theme.AppCompat.Light">
+        <item name="android:buttonStyle">
+            @style/Widget.AppCompat.Button.Borderless.Colored
+        </item>
+        <item name="colorAccent">#FFAB40</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
